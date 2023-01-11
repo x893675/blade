@@ -1,0 +1,96 @@
+{{ .Boilerplate }}
+
+package server
+
+import (
+	"context"
+	"fmt"
+	"{{ .Repo }}/pkg/config"
+	"{{ .Repo }}/pkg/ent"
+	"{{ .Repo }}/pkg/logger"
+	"{{ .Repo }}/pkg/server/filters"
+	"{{ .Repo }}/pkg/server/validate"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
+	"github.com/labstack/gommon/log"
+	echoSwagger "github.com/swaggo/echo-swagger"
+	"net/http"
+	"time"
+)
+
+type Service struct {
+	config *config.Config
+	db     *ent.Client
+	e      *echo.Echo
+}
+
+func NewService(config *config.Config) *Service {
+	return &Service{
+		config: config,
+		e:      echo.New(),
+	}
+}
+
+func (s *Service) PrepareRun(ctx context.Context) error {
+	var err error
+	s.db, err = ent.Open(s.config.Database.Driver, s.config.Database.Dsn)
+	if err != nil {
+		return err
+	}
+
+	if err := s.db.Schema.Create(ctx); err != nil {
+		return err
+	}
+
+	if err := s.buildHandlerChain(ctx); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s *Service) Run(ctx context.Context) error {
+	go func() {
+		<-ctx.Done()
+		ictx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel()
+		if err := s.e.Shutdown(ictx); err != nil {
+			s.e.Logger.Fatal(err)
+		}
+		if err := s.db.Close(); err != nil {
+			s.e.Logger.Fatal(err)
+		}
+	}()
+	if s.config.GenericServerRunOptions.TLSCertFile != "" && s.config.GenericServerRunOptions.TLSPrivateKey != "" {
+		if err := s.e.StartTLS(
+			fmt.Sprintf("%s:%d", s.config.GenericServerRunOptions.BindAddress, s.config.GenericServerRunOptions.Port),
+			s.config.GenericServerRunOptions.TLSCertFile,
+			s.config.GenericServerRunOptions.TLSPrivateKey); err != nil && err != http.ErrServerClosed {
+			return err
+		}
+	}
+	if err := s.e.Start(
+		fmt.Sprintf("%s:%d",
+			s.config.GenericServerRunOptions.BindAddress,
+			s.config.GenericServerRunOptions.Port)); err != nil && err != http.ErrServerClosed {
+		return err
+	}
+	logger.Info("{{ .ProjectName }} shutdown.")
+	return nil
+}
+
+func (s *Service) buildHandlerChain(ctx context.Context) error {
+	s.e.Logger.SetLevel(log.ERROR)
+	s.e.HideBanner = true
+	s.e.Validator = validate.New()
+	if s.config.Debug {
+		s.e.GET("/swagger/*", echoSwagger.WrapHandler)
+		logger.Debugf("please visit %s:%d/swagger/index.html to get swagger docs",
+			s.config.GenericServerRunOptions.BindAddress, s.config.GenericServerRunOptions.Port)
+	}
+	s.e.Use(middleware.Recover())
+	s.e.Use(filters.ZapLogger(logger.WithName("middleware-log")))
+	s.e.Use(middleware.BodyLimit("2M"))
+
+	return nil
+}

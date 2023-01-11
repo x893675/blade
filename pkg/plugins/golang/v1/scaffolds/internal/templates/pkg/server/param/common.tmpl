@@ -1,0 +1,31 @@
+{{ .Boilerplate }}
+
+package param
+
+const (
+	DefaultLimit = 10
+	DefaultPage  = 1
+)
+
+type Query struct {
+	Page  int `json:"page" query:"page" form:"page"`
+	Limit int `json:"limit" query:"limit" form:"limit"`
+}
+
+func (q *Query) Offset() int {
+	return (q.Page - 1) * q.Limit
+}
+
+func DefaultQuery() *Query {
+	return &Query{
+		Page:  DefaultPage,
+		Limit: DefaultLimit,
+	}
+}
+
+// PageableResponse model info
+// @Description Pageable response
+type PageableResponse struct {
+	Items      interface{} `json:"items"`
+	TotalCount int         `json:"totalCount"`
+}

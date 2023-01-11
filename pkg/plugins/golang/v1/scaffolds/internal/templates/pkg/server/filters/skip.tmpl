@@ -1,0 +1,34 @@
+{{ .Boilerplate }}
+
+package filters
+
+import (
+	"{{ .Repo }}/pkg/utils/sets"
+	"github.com/labstack/echo/v4"
+	"strings"
+)
+
+type Skipper func(ctx echo.Context) bool
+
+type PathExclude struct {
+	excludePaths sets.String
+	prefixes     []string
+}
+
+func (a PathExclude) hasPrefix(pth string) bool {
+	for _, prefix := range a.prefixes {
+		if strings.HasPrefix(pth, prefix) {
+			return true
+		}
+	}
+	return false
+}
+
+func PathSkipper(p *PathExclude) Skipper {
+	return func(ctx echo.Context) bool {
+		if p.hasPrefix(ctx.Path()) {
+			return true
+		}
+		return false
+	}
+}
