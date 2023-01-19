@@ -150,11 +150,10 @@ func (p *initSubcommand) PostScaffold() error {
 		if err != nil {
 			return err
 		}
-	}
-
-	err := util.RunCmd("Update dependencies", "go", "mod", "tidy")
-	if err != nil {
-		return err
+		err = util.RunCmd("Update dependencies", "go", "mod", "tidy")
+		if err != nil {
+			return err
+		}
 	}
 
 	fmt.Printf("Next: define a resource with:\n$ %s create api\n", p.commandName)

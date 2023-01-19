@@ -21,12 +21,8 @@ import (
 	"github.com/x893675/blade/pkg/plugins/golang/v1/scaffolds/internal/templates"
 	"github.com/x893675/blade/pkg/plugins/golang/v1/scaffolds/internal/templates/hack"
 	configTemplate "github.com/x893675/blade/pkg/plugins/golang/v1/scaffolds/internal/templates/pkg/config"
-	"github.com/x893675/blade/pkg/plugins/golang/v1/scaffolds/internal/templates/pkg/ent"
-	"github.com/x893675/blade/pkg/plugins/golang/v1/scaffolds/internal/templates/pkg/ent/schema"
 	"github.com/x893675/blade/pkg/plugins/golang/v1/scaffolds/internal/templates/pkg/errdetails"
 	"github.com/x893675/blade/pkg/plugins/golang/v1/scaffolds/internal/templates/pkg/logger"
-	"github.com/x893675/blade/pkg/plugins/golang/v1/scaffolds/internal/templates/pkg/models"
-	"github.com/x893675/blade/pkg/plugins/golang/v1/scaffolds/internal/templates/pkg/mtime"
 	"github.com/x893675/blade/pkg/plugins/golang/v1/scaffolds/internal/templates/pkg/server"
 	"github.com/x893675/blade/pkg/plugins/golang/v1/scaffolds/internal/templates/pkg/server/filters"
 	"github.com/x893675/blade/pkg/plugins/golang/v1/scaffolds/internal/templates/pkg/server/param"
@@ -127,10 +123,10 @@ func (s *initScaffolder) Scaffold() error {
 		// pkg/config
 		&configTemplate.Config{},
 		// pkg/ent
-		&ent.Generate{},
-		&schema.Base{},
+		//&ent.Generate{},
+		//&schema.Base{},
 		// pkg/models
-		&models.Models{},
+		//&models.Models{},
 		// pkg/errdetails
 		&errdetails.ErrorDetail{},
 		// pkg/logger
@@ -138,7 +134,7 @@ func (s *initScaffolder) Scaffold() error {
 		&logger.Logger{},
 		&logger.Options{},
 		// pkg/mtime
-		&mtime.MTime{},
+		//&mtime.MTime{},
 		// pkg/server
 		&filters.Logger{},
 		&filters.Skip{},

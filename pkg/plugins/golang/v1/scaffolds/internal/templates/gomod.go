@@ -47,13 +47,10 @@ module {{ .Repo }}
 go 1.19
 
 require (
-	entgo.io/ent v0.11.4
 	github.com/go-playground/validator/v10 v10.11.1
-	github.com/go-sql-driver/mysql v1.6.0
 	github.com/google/uuid v1.3.0
 	github.com/labstack/echo/v4 v4.10.0
 	github.com/labstack/gommon v0.4.0
-	github.com/mattn/go-sqlite3 v1.14.16
 	github.com/swaggo/echo-swagger v1.3.5
 	github.com/swaggo/swag v1.8.9
 	go.uber.org/zap v1.24.0

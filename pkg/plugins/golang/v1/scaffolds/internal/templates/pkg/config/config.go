@@ -39,7 +39,6 @@ type Config struct {
 	Debug                   bool              ` + "`" + `json:"debug" yaml:"debug"` + "`" + `
 	GenericServerRunOptions *ServerRunOptions ` + "`" + `json:"generic" yaml:"generic"` + "`" + `
 	LogOptions              *logger.Options   ` + "`" + `json:"log,omitempty" yaml:"log,omitempty"` + "`" + `
-	Database                *Database         ` + "`" + `json:"db" yaml:"db"` + "`" + `
 }
 
 type ServerRunOptions struct {
@@ -47,11 +46,6 @@ type ServerRunOptions struct {
 	Port          int    ` + "`" + `json:"port" yaml:"port"` + "`" + `
 	TLSCertFile   string ` + "`" + `json:"tlsCertFile" yaml:"tlsCertFile"` + "`" + `
 	TLSPrivateKey string ` + "`" + `json:"tlsPrivateKey" yaml:"tlsPrivateKey"` + "`" + `
-}
-
-type Database struct {
-	Driver string ` + "`" + `json:"driver" yaml:"driver"` + "`" + `
-	Dsn    string ` + "`" + `json:"dsn" yaml:"dsn"` + "`" + `
 }
 
 func Load(path string) (*Config, error) {

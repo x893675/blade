@@ -109,9 +109,6 @@ import (
 	"time"
 
 	_ "{{ .Repo }}/docs"
-	_ "{{ .Repo }}/pkg/ent/runtime"
-	_ "github.com/go-sql-driver/mysql"
-	_ "github.com/mattn/go-sqlite3"
 	%s
 )
 
