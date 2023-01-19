@@ -415,7 +415,7 @@ func (c *CLI) addSubcommands() {
 	//}
 
 	// kubebuilder edit
-	c.cmd.AddCommand(c.newEditCmd())
+	// c.cmd.AddCommand(c.newEditCmd())
 
 	// kubebuilder init
 	c.cmd.AddCommand(c.newInitCmd())

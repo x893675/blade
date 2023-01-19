@@ -18,6 +18,7 @@ package v1
 
 import (
 	"fmt"
+	"github.com/x893675/blade/pkg/internal/validation"
 	"github.com/x893675/blade/pkg/plugins/golang/v1/scaffolds"
 	"os"
 	"path/filepath"
@@ -66,14 +67,11 @@ func (p *initSubcommand) UpdateMetadata(cliMeta plugin.CLIMetadata, subcmdMeta *
   - a "go.mod" with project dependencies
   - a "PROJECT" file that stores project configuration
   - a "Makefile" with several useful make targets for the project
-  - several YAML files for project deployment under the "config" directory
-  - a "main.go" file that creates the manager that will run the project controllers
+  - a "main.go" file that creates the server
+  - a "pkg" docs that include core files
 `
-	subcmdMeta.Examples = fmt.Sprintf(`  # Initialize a new project with your domain and name in copyright
-  %[1]s init --plugins go/v3 --domain example.org --owner "Your name"
-
-  # Initialize a new project defining a specific project version
-  %[1]s init --plugins go/v3 --project-version 3
+	subcmdMeta.Examples = fmt.Sprintf(`  # Initialize a new project with your repo and name in copyright
+  %[1]s init --plugins go/v1 --owner "Your name" --repo "Your Repo" --project-name "Your Project"
 `, cliMeta.CommandName)
 }
 
@@ -106,6 +104,22 @@ func (p *initSubcommand) InjectConfig(c config.Config) error {
 			return fmt.Errorf("error finding current repository: %v", err)
 		}
 		p.repo = repoPath
+	}
+
+	// Assign a default project name
+	if p.projectName == "" {
+		dir, err := os.Getwd()
+		if err != nil {
+			return fmt.Errorf("error getting current directory: %v", err)
+		}
+		p.projectName = strings.ToLower(filepath.Base(dir))
+	}
+	// Check if the project name is a valid k8s namespace (DNS 1123 label).
+	if err := validation.IsDNS1123Label(p.projectName); err != nil {
+		return fmt.Errorf("project name (%s) is invalid: %v", p.projectName, err)
+	}
+	if err := p.config.SetProjectName(p.projectName); err != nil {
+		return err
 	}
 
 	return p.config.SetRepository(p.repo)
@@ -155,8 +169,6 @@ func (p *initSubcommand) PostScaffold() error {
 			return err
 		}
 	}
-
-	fmt.Printf("Next: define a resource with:\n$ %s create api\n", p.commandName)
 	return nil
 }
 

@@ -38,11 +38,6 @@ import (
 	"sigs.k8s.io/kubebuilder/v3/pkg/plugins"
 )
 
-const (
-	// ControllerRuntimeVersion is the kubernetes-sigs/controller-runtime version to be used in the project
-	ControllerRuntimeVersion = "v0.13.1"
-)
-
 var _ plugins.Scaffolder = &initScaffolder{}
 
 type initScaffolder struct {
@@ -111,6 +106,7 @@ func (s *initScaffolder) Scaffold() error {
 		&templates.Dockerfile{},
 		&templates.DockerIgnore{},
 		&templates.Readme{},
+		&templates.Config{},
 		// pkg/version
 		&version.Version{},
 		// pkg/utils/sets

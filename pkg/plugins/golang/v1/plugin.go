@@ -35,7 +35,6 @@ var _ plugin.Full = Plugin{}
 // Plugin implements the plugin.Full interface
 type Plugin struct {
 	initSubcommand
-	editSubcommand
 }
 
 // Name returns the name of the plugin
@@ -49,6 +48,3 @@ func (Plugin) SupportedProjectVersions() []config.Version { return supportedProj
 
 // GetInitSubcommand will return the subcommand which is responsible for initializing and common scaffolding
 func (p Plugin) GetInitSubcommand() plugin.InitSubcommand { return &p.initSubcommand }
-
-// GetEditSubcommand will return the subcommand which is responsible for editing the scaffold of the project
-func (p Plugin) GetEditSubcommand() plugin.EditSubcommand { return &p.editSubcommand }

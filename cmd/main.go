@@ -10,12 +10,11 @@ import (
 func main() {
 	c, err := cli.New(
 		cli.WithCommandName("blade"),
+		cli.WithDescription("CLI tool for building HTTP/GRPC Server."),
 		cli.WithVersion(versionString()),
 		cli.WithPlugins(
 			golangv1.Plugin{},
 		),
-		//cli.WithDefaultPlugins(cfgv2.Version, gov2Bundle),
-		//cli.WithDefaultPlugins(cfgv3.Version, gov3Bundle),
 		cli.WithDefaultPlugins(cfgv1.Version, golangv1.Plugin{}),
 		cli.WithDefaultProjectVersion(cfgv1.Version),
 		//cli.WithExtraCommands(commands...),

@@ -74,7 +74,7 @@ type Full interface {
 	Init
 	//CreateAPI
 	//CreateWebhook
-	Edit
+	//Edit
 }
 
 // Bundle allows to group plugins under a single key.
