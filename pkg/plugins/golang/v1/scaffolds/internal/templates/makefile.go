@@ -47,6 +47,10 @@ func (f *Makefile) SetTemplateDefaults() error {
 
 //nolint:lll
 const makefileTemplate = `
+# default docker image url
+IMG ?= {{ .ProjectName }}
+# container build tools, default is docker, you can overwrite to nerdctl or other
+BUILD_TOOL ?= docker
 # Get the currently used golang install path (in GOPATH/bin, unless GOBIN is set)
 ifeq (,$(shell go env GOBIN))
 GOBIN=$(shell go env GOPATH)/bin
@@ -120,5 +124,9 @@ build: generate fmt vet ## Build binary.
 .PHONY: run
 run: generate fmt vet ## Run a server from your host.
 	go run ./main.go
+
+.PHONY: build-image
+docker-build: ## Build docker image with the {{ .ProjectName }}.
+	${BUILD_TOOL} build -t ${IMG} .
 
 `
