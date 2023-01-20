@@ -2,7 +2,7 @@ package main
 
 import (
 	cfgv1 "github.com/x893675/blade/pkg/config/v1"
-	golangv1 "github.com/x893675/blade/pkg/plugins/golang/v1"
+	httpv1 "github.com/x893675/blade/pkg/plugins/http/v1"
 	"log"
 	"sigs.k8s.io/kubebuilder/v3/pkg/cli"
 )
@@ -13,9 +13,9 @@ func main() {
 		cli.WithDescription("CLI tool for building HTTP/GRPC Server."),
 		cli.WithVersion(versionString()),
 		cli.WithPlugins(
-			golangv1.Plugin{},
+			httpv1.Plugin{},
 		),
-		cli.WithDefaultPlugins(cfgv1.Version, golangv1.Plugin{}),
+		cli.WithDefaultPlugins(cfgv1.Version, httpv1.Plugin{}),
 		cli.WithDefaultProjectVersion(cfgv1.Version),
 		//cli.WithExtraCommands(commands...),
 		//cli.WithExtraAlphaCommands(alphaCommands...),
@@ -30,5 +30,4 @@ func main() {
 	if err := c.Run(); err != nil {
 		log.Fatal(err)
 	}
-
 }

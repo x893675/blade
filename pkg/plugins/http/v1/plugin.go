@@ -18,12 +18,12 @@ package v1
 
 import (
 	cfgv1 "github.com/x893675/blade/pkg/config/v1"
-	"github.com/x893675/blade/pkg/plugins/golang"
+	"github.com/x893675/blade/pkg/plugins/http"
 	"sigs.k8s.io/kubebuilder/v3/pkg/config"
 	"sigs.k8s.io/kubebuilder/v3/pkg/plugin"
 )
 
-const pluginName = "base." + golang.DefaultNameQualifier
+const pluginName = http.DefaultNameQualifier
 
 var (
 	pluginVersion            = plugin.Version{Number: 1}

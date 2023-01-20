@@ -19,7 +19,7 @@ package v1
 import (
 	"fmt"
 	"github.com/x893675/blade/pkg/internal/validation"
-	"github.com/x893675/blade/pkg/plugins/golang/v1/scaffolds"
+	"github.com/x893675/blade/pkg/plugins/http/v1/scaffolds"
 	"os"
 	"path/filepath"
 	"strings"
