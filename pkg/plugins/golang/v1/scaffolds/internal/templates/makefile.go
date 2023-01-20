@@ -126,7 +126,7 @@ run: generate fmt vet ## Run a server from your host.
 	go run ./main.go
 
 .PHONY: build-image
-docker-build: ## Build docker image with the {{ .ProjectName }}.
+build-image: ## Build docker image with the {{ .ProjectName }}.
 	${BUILD_TOOL} build -t ${IMG} .
 
 `
