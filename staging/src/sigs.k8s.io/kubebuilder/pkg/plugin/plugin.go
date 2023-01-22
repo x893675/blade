@@ -72,7 +72,7 @@ type Edit interface {
 // Full is an interface for plugins that provide `init`, `create api`, `create webhook` and `edit` subcommands.
 type Full interface {
 	Init
-	//CreateAPI
+	CreateAPI
 	//CreateWebhook
 	//Edit
 }

@@ -406,13 +406,13 @@ func (c *CLI) addSubcommands() {
 	}
 
 	// kubebuilder create
-	//createCmd := c.newCreateCmd()
+	createCmd := c.newCreateCmd()
 	// kubebuilder create api
-	//createCmd.AddCommand(c.newCreateAPICmd())
+	createCmd.AddCommand(c.newCreateAPICmd())
 	//createCmd.AddCommand(c.newCreateWebhookCmd())
-	//if createCmd.HasSubCommands() {
-	//	c.cmd.AddCommand(createCmd)
-	//}
+	if createCmd.HasSubCommands() {
+		c.cmd.AddCommand(createCmd)
+	}
 
 	// kubebuilder edit
 	// c.cmd.AddCommand(c.newEditCmd())

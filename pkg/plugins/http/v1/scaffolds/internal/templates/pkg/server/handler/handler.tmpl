@@ -1,0 +1,96 @@
+{{ .Boilerplate }}
+
+package {{ .Resource.Version }}
+
+import (
+	"github.com/labstack/echo/v4"
+	"net/http"
+)
+
+type handle struct {
+}
+
+func newHandler() *handle {
+	return &handle{}
+}
+
+// Create{{ toPascal .Resource.Kind }} Create {{ toPascal .Resource.Kind }}
+//
+//			@Summary      Create {{ toPascal .Resource.Kind }}
+//			@Description  Create {{ toPascal .Resource.Kind }}
+//			@Tags         {{ .Resource.Group }}
+//			@Accept       json
+//			@Produce      json
+//			@Success      200  {object}  param.PageableResponse{} "desc"
+//			@Failure      500  {object}  errdetails.BizError
+//			@Router       /{{ lower .Resource.Group }}/{{ .Resource.Version }}/{{ lower .Resource.Kind }} [post]
+func (h *handle) Create{{ toPascal .Resource.Kind }}(c echo.Context) error {
+	// TODO(user): custom logic here
+	return c.String(http.StatusOK, c.Path())
+}
+
+
+// List{{ toPascal .Resource.Kind }} List {{ toPascal .Resource.Kind }}
+//
+//			@Summary      List {{ toPascal .Resource.Kind }}
+//			@Description  list {{ toPascal .Resource.Kind }}
+//			@Tags         {{ .Resource.Group }}
+//			@Accept       json
+//			@Produce      json
+//	        @Param        page   query  int  false "pagination" minimum(1) default(1)
+//	        @Param        limit   query  int  false "the number of object in response body" minimum(10) default(10)
+//			@Success      200  {object}  param.PageableResponse{} "desc"
+//			@Failure      500  {object}  errdetails.BizError
+//			@Router       /{{ lower .Resource.Group }}/{{ .Resource.Version }}/{{ lower .Resource.Kind }} [get]
+func (h *handle) List{{ toPascal .Resource.Kind }}(c echo.Context) error {
+	// TODO(user): custom logic here
+	return c.String(http.StatusOK, c.Path())
+}
+
+// Describe{{ toPascal .Resource.Kind }} Describe {{ toPascal .Resource.Kind }}
+//
+//			@Summary      Describe {{ toPascal .Resource.Kind }}
+//			@Description  Describe {{ toPascal .Resource.Kind }}
+//			@Tags         {{ .Resource.Group }}
+//			@Accept       json
+//			@Produce      json
+//          @Param        id     path   int  true  "the resource ID"
+//			@Success      200  {object}  param.PageableResponse{} "desc"
+//			@Failure      500  {object}  errdetails.BizError
+//			@Router       /{{ lower .Resource.Group }}/{{ .Resource.Version }}/{{ lower .Resource.Kind }}/{id} [get]
+func (h *handle) Describe{{ toPascal .Resource.Kind }}(c echo.Context) error {
+	// TODO(user): custom logic here
+	return c.String(http.StatusOK, c.Path())
+}
+
+// Update{{ toPascal .Resource.Kind }} Update {{ toPascal .Resource.Kind }}
+//
+//			@Summary      Update {{ toPascal .Resource.Kind }}
+//			@Description  Update {{ toPascal .Resource.Kind }}
+//			@Tags         {{ .Resource.Group }}
+//			@Accept       json
+//			@Produce      json
+//          @Param        id     path   int  true  "the resource ID"
+//			@Success      200  {object}  param.PageableResponse{} "desc"
+//			@Failure      500  {object}  errdetails.BizError
+//			@Router       /{{ lower .Resource.Group }}/{{ .Resource.Version }}/{{ lower .Resource.Kind }}/{id} [put]
+func (h *handle) Update{{ toPascal .Resource.Kind }}(c echo.Context) error {
+	// TODO(user): custom logic here
+	return c.String(http.StatusOK, c.Path())
+}
+
+// Delete{{ toPascal .Resource.Kind }} Delete {{ toPascal .Resource.Kind }}
+//
+//			@Summary      Delete {{ toPascal .Resource.Kind }}
+//			@Description  Delete {{ toPascal .Resource.Kind }}
+//			@Tags         {{ .Resource.Group }}
+//			@Accept       json
+//			@Produce      json
+//          @Param        id     path   int  true  "the resource ID"
+//			@Success      200  {object}  param.PageableResponse{} "desc"
+//			@Failure      500  {object}  errdetails.BizError
+//			@Router       /{{ lower .Resource.Group }}/{{ .Resource.Version }}/{{ lower .Resource.Kind }}/{id} [delete]
+func (h *handle) Delete{{ toPascal .Resource.Kind }}(c echo.Context) error {
+	// TODO(user): custom logic here
+	return c.String(http.StatusOK, c.Path())
+}

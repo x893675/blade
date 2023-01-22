@@ -16,6 +16,8 @@ limitations under the License.
 
 package config
 
+import "sigs.k8s.io/kubebuilder/v3/pkg/model/resource"
+
 // Config defines the interface that project configuration types must follow.
 type Config interface {
 	/* Version */
@@ -70,21 +72,21 @@ type Config interface {
 
 	/* Resources */
 
-	//// ResourcesLength returns the number of tracked resources.
-	//ResourcesLength() int
-	//// HasResource checks if the provided GVK is stored in the Config.
-	//HasResource(gvk resource.GVK) bool
-	//// GetResource returns the stored resource matching the provided GVK.
-	//GetResource(gvk resource.GVK) (resource.Resource, error)
-	//// GetResources returns all the stored resources.
-	//GetResources() ([]resource.Resource, error)
-	//// AddResource adds the provided resource if it was not present, no-op if it was already present.
-	//AddResource(res resource.Resource) error
-	//// UpdateResource adds the provided resource if it was not present, modifies it if it was already present.
-	//UpdateResource(res resource.Resource) error
+	// ResourcesLength returns the number of tracked resources.
+	ResourcesLength() int
+	// HasResource checks if the provided GVK is stored in the Config.
+	HasResource(gvk resource.GVK) bool
+	// GetResource returns the stored resource matching the provided GVK.
+	GetResource(gvk resource.GVK) (resource.Resource, error)
+	// GetResources returns all the stored resources.
+	GetResources() ([]resource.Resource, error)
+	// AddResource adds the provided resource if it was not present, no-op if it was already present.
+	AddResource(res resource.Resource) error
+	// UpdateResource adds the provided resource if it was not present, modifies it if it was already present.
+	UpdateResource(res resource.Resource) error
 
-	//// HasGroup checks if the provided group is the same as any of the tracked resources.
-	//HasGroup(group string) bool
+	// HasGroup checks if the provided group is the same as any of the tracked resources.
+	HasGroup(group string) bool
 	//// ListCRDVersions returns a list of the CRD versions in use by the tracked resources.
 	//ListCRDVersions() []string
 	//// ListWebhookVersions returns a list of the webhook versions in use by the tracked resources.

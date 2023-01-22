@@ -18,7 +18,9 @@ package v1
 
 import (
 	"fmt"
+	"sigs.k8s.io/kubebuilder/v3/pkg/model/resource"
 	"sigs.k8s.io/yaml"
+	"strings"
 
 	"sigs.k8s.io/kubebuilder/v3/pkg/config"
 )
@@ -66,7 +68,7 @@ type cfg struct {
 	ComponentConfig bool `json:"componentConfig,omitempty"`
 
 	// Resources
-	// Resources []resource.Resource `json:"resources,omitempty"`
+	Resources []resource.Resource `json:"resources,omitempty"`
 
 	// Plugins
 	Plugins pluginConfigs `json:"plugins,omitempty"`
@@ -211,16 +213,16 @@ func (c *cfg) EncodePluginConfig(key string, configObj interface{}) error {
 
 // Marshal implements config.Config
 func (c cfg) MarshalYAML() ([]byte, error) {
-	//for i, r := range c.Resources {
-	//	// If API is empty, omit it (prevents `api: {}`).
-	//	if r.API != nil && r.API.IsEmpty() {
-	//		c.Resources[i].API = nil
-	//	}
-	//	// If Webhooks is empty, omit it (prevents `webhooks: {}`).
-	//	if r.Webhooks != nil && r.Webhooks.IsEmpty() {
-	//		c.Resources[i].Webhooks = nil
-	//	}
-	//}
+	for i, r := range c.Resources {
+		// If API is empty, omit it (prevents `api: {}`).
+		if r.API != nil && r.API.IsEmpty() {
+			c.Resources[i].API = nil
+		}
+		// If Webhooks is empty, omit it (prevents `webhooks: {}`).
+		if r.Webhooks != nil && r.Webhooks.IsEmpty() {
+			c.Resources[i].Webhooks = nil
+		}
+	}
 
 	content, err := yaml.Marshal(c)
 	if err != nil {
@@ -237,4 +239,104 @@ func (c *cfg) UnmarshalYAML(b []byte) error {
 	}
 
 	return nil
+}
+
+// ResourcesLength implements config.Config
+func (c cfg) ResourcesLength() int {
+	return len(c.Resources)
+}
+
+// HasResource implements config.Config
+func (c cfg) HasResource(gvk resource.GVK) bool {
+	for _, res := range c.Resources {
+		if gvk.IsEqualTo(res.GVK) {
+			return true
+		}
+	}
+
+	return false
+}
+
+// GetResource implements config.Config
+func (c cfg) GetResource(gvk resource.GVK) (resource.Resource, error) {
+	for _, res := range c.Resources {
+		if gvk.IsEqualTo(res.GVK) {
+			r := res.Copy()
+
+			// Plural is only stored if irregular, so if it is empty recover the regular form
+			if r.Plural == "" {
+				r.Plural = resource.RegularPlural(r.Kind)
+			}
+
+			return r, nil
+		}
+	}
+
+	return resource.Resource{}, config.ResourceNotFoundError{GVK: gvk}
+}
+
+// GetResources implements config.Config
+func (c cfg) GetResources() ([]resource.Resource, error) {
+	resources := make([]resource.Resource, 0, len(c.Resources))
+	for _, res := range c.Resources {
+		r := res.Copy()
+
+		// Plural is only stored if irregular, so if it is empty recover the regular form
+		if r.Plural == "" {
+			r.Plural = resource.RegularPlural(r.Kind)
+		}
+
+		resources = append(resources, r)
+	}
+
+	return resources, nil
+}
+
+// AddResource implements config.Config
+func (c *cfg) AddResource(res resource.Resource) error {
+	// As res is passed by value it is already a shallow copy, but we need to make a deep copy
+	res = res.Copy()
+
+	// Plural is only stored if irregular
+	if res.Plural == resource.RegularPlural(res.Kind) {
+		res.Plural = ""
+	}
+
+	if !c.HasResource(res.GVK) {
+		c.Resources = append(c.Resources, res)
+	}
+	return nil
+}
+
+// UpdateResource implements config.Config
+func (c *cfg) UpdateResource(res resource.Resource) error {
+	// As res is passed by value it is already a shallow copy, but we need to make a deep copy
+	res = res.Copy()
+
+	// Plural is only stored if irregular
+	if res.Plural == resource.RegularPlural(res.Kind) {
+		res.Plural = ""
+	}
+
+	for i, r := range c.Resources {
+		if res.GVK.IsEqualTo(r.GVK) {
+			return c.Resources[i].Update(res)
+		}
+	}
+
+	c.Resources = append(c.Resources, res)
+	return nil
+}
+
+// HasGroup implements config.Config
+func (c cfg) HasGroup(group string) bool {
+	// Return true if the target group is found in the tracked resources
+	for _, r := range c.Resources {
+		if strings.EqualFold(group, r.Group) {
+			return true
+		}
+	}
+
+	// Return false otherwise
+	return false
 }

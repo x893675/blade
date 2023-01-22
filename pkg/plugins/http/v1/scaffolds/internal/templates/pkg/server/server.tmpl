@@ -15,6 +15,7 @@ import (
 	echoSwagger "github.com/swaggo/echo-swagger"
 	"net/http"
 	"time"
+	{{.ImportMarker}}
 )
 
 type Service struct {
@@ -76,6 +77,7 @@ func (s *Service) buildHandlerChain(ctx context.Context) error {
 	s.e.Use(middleware.Recover())
 	s.e.Use(filters.ZapLogger(logger.WithName("middleware-log")))
 	s.e.Use(middleware.BodyLimit("2M"))
+    {{.RouterMarker}}
 
 	return nil
 }

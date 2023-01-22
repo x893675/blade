@@ -1,0 +1,21 @@
+{{ .Boilerplate }}
+
+package {{ .Resource.Version }}
+
+import (
+	"github.com/labstack/echo/v4"
+	"{{ .Repo }}/pkg/server/handler/{{ lower .Resource.Group }}"
+)
+
+const GroupVersionPrefix = {{ lower .Resource.Group }}.DefaultGroupPrefix + "/{{ .Resource.Version }}"
+
+func RegisterRouter(e *echo.Echo) {
+	g := e.Group(GroupVersionPrefix)
+	h := newHandler()
+	g.POST("/{{ lower .Resource.Kind }}", h.Create{{ toPascal .Resource.Kind }})
+	g.GET("/{{ lower .Resource.Kind }}", h.List{{ toPascal .Resource.Kind }})
+	g.GET("/{{ lower .Resource.Kind }}/:id", h.Describe{{ toPascal .Resource.Kind }})
+	g.PUT("/{{ lower .Resource.Kind }}/:id", h.Update{{ toPascal .Resource.Kind }})
+    g.DELETE("/{{ lower .Resource.Kind }}/:id", h.Delete{{ toPascal .Resource.Kind }})
+    // TODO(user): add user custom router here
+}
