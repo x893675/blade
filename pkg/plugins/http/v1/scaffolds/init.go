@@ -22,6 +22,7 @@ import (
 	"github.com/x893675/blade/pkg/plugins/http/v1/scaffolds/internal/templates/hack"
 	configTemplate "github.com/x893675/blade/pkg/plugins/http/v1/scaffolds/internal/templates/pkg/config"
 	"github.com/x893675/blade/pkg/plugins/http/v1/scaffolds/internal/templates/pkg/errdetails"
+	"github.com/x893675/blade/pkg/plugins/http/v1/scaffolds/internal/templates/pkg/healthz"
 	"github.com/x893675/blade/pkg/plugins/http/v1/scaffolds/internal/templates/pkg/logger"
 	"github.com/x893675/blade/pkg/plugins/http/v1/scaffolds/internal/templates/pkg/server"
 	"github.com/x893675/blade/pkg/plugins/http/v1/scaffolds/internal/templates/pkg/server/filters"
@@ -136,6 +137,7 @@ func (s *initScaffolder) Scaffold() error {
 		&filters.Skip{},
 		&param.Common{},
 		&validate.Validate{},
+		&healthz.Healthz{},
 		&server.Server{},
 	)
 }
