@@ -340,3 +340,13 @@ func (c cfg) HasGroup(group string) bool {
 	// Return false otherwise
 	return false
 }
+
+// HasGroupVersion implements config.Config
+func (c cfg) HasGroupVersion(group string, version string) bool {
+	for _, r := range c.Resources {
+		if strings.EqualFold(group, r.Group) && strings.EqualFold(version, r.Version) {
+			return true
+		}
+	}
+	return false
+}

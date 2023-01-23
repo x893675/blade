@@ -87,6 +87,8 @@ type Config interface {
 
 	// HasGroup checks if the provided group is the same as any of the tracked resources.
 	HasGroup(group string) bool
+	// HasGroupVersion checks if the provided group version is the same as any of the tracked resources.
+	HasGroupVersion(group string, version string) bool
 	//// ListCRDVersions returns a list of the CRD versions in use by the tracked resources.
 	//ListCRDVersions() []string
 	//// ListWebhookVersions returns a list of the webhook versions in use by the tracked resources.

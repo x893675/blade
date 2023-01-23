@@ -73,6 +73,11 @@ type cfg struct {
 	Plugins pluginConfigs `json:"plugins,omitempty"`
 }
 
+func (c cfg) HasGroupVersion(group string, version string) bool {
+	//TODO implement me
+	panic("implement me")
+}
+
 // pluginConfigs holds a set of arbitrary plugin configuration objects mapped by plugin key.
 type pluginConfigs map[string]pluginConfig
 

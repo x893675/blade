@@ -94,3 +94,5 @@ func (h *handle) Delete{{ toPascal .Resource.Kind }}(c echo.Context) error {
 	// TODO(user): custom logic here
 	return c.String(http.StatusOK, c.Path())
 }
+
+{{ .HandlerMarker }}

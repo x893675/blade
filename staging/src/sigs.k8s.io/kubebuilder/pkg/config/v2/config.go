@@ -44,6 +44,11 @@ type cfg struct {
 	Gvks []resource.GVK `json:"resources,omitempty"`
 }
 
+func (c cfg) HasGroupVersion(group string, version string) bool {
+	//TODO implement me
+	panic("implement me")
+}
+
 // New returns a new config.Config
 func New() config.Config {
 	return &cfg{Version: Version}

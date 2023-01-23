@@ -43,6 +43,16 @@ func (s *apiScaffolder) InjectFS(fs machinery.Filesystem) {
 
 // Scaffold implements cmdutil.Scaffolder
 func (s *apiScaffolder) Scaffold() error {
+	if s.config.HasResource(s.resource.GVK) && !s.force {
+		fmt.Println("Resource scaffold exist, skip now")
+		return nil
+	}
+
+	var doUpdate bool
+	if s.config.HasGroupVersion(s.resource.Group, s.resource.Version) {
+		doUpdate = true
+	}
+
 	fmt.Println("Writing scaffold for you to edit...")
 
 	// Load the boilerplate
@@ -62,6 +72,15 @@ func (s *apiScaffolder) Scaffold() error {
 		return fmt.Errorf("error updating resource: %w", err)
 	}
 
+	if doUpdate {
+		if err := scaffold.Execute(
+			&handler.RegistryUpdater{},
+			&handler.HandlerUpdater{},
+		); err != nil {
+			return fmt.Errorf("error scaffolding APIs: %v", err)
+		}
+		return nil
+	}
 	if err := scaffold.Execute(
 		&handler.Base{},
 		&handler.Registry{},

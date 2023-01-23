@@ -17,5 +17,6 @@ func RegisterRouter(e *echo.Echo) {
 	g.GET("/{{ lower .Resource.Kind }}/:id", h.Describe{{ toPascal .Resource.Kind }})
 	g.PUT("/{{ lower .Resource.Kind }}/:id", h.Update{{ toPascal .Resource.Kind }})
     g.DELETE("/{{ lower .Resource.Kind }}/:id", h.Delete{{ toPascal .Resource.Kind }})
+    {{ .RegistryMarker }}
     // TODO(user): add user custom router here
 }
