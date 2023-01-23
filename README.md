@@ -6,7 +6,25 @@
 
 ## Installation
 
+`go inistall github.com/x893675/blade/cmd@latest`
+
 ## Getting Started
+
+1. 初始化 HTTP 项目
+   ```shell
+   # 初始化项目，设置作者，仓库名，项目名
+   blade init --owner "x893675" --repo github.com/x893675/blade-test --project-name blade-test
+   ```
+2. 添加 API
+   ```shell
+   # 添加 API, API 路由为 /foo/v1/user
+   blade create api --group foo --version v1 --kind User
+   # 在同一 GROUP 下添加另一个资源对象
+   blade create api --group foo --version v1 --kind Group
+   # 添加另一组 API
+   blade create api --group bar --version v1 --kind User
+   ```
+3. `make help` 查看 Makefile 帮助信息
 
 ## Inspire By
 
