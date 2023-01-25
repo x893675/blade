@@ -18,12 +18,13 @@ package v1
 
 import (
 	"fmt"
-	"github.com/x893675/blade/pkg/internal/validation"
-	"github.com/x893675/blade/pkg/plugins/http/v1/scaffolds"
 	"os"
 	"path/filepath"
 	"strings"
 	"unicode"
+
+	"github.com/x893675/blade/pkg/internal/validation"
+	"github.com/x893675/blade/pkg/plugins/http/v1/scaffolds"
 
 	"github.com/spf13/pflag"
 

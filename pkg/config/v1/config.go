@@ -18,9 +18,10 @@ package v1
 
 import (
 	"fmt"
+	"strings"
+
 	"sigs.k8s.io/kubebuilder/v3/pkg/model/resource"
 	"sigs.k8s.io/yaml"
-	"strings"
 
 	"sigs.k8s.io/kubebuilder/v3/pkg/config"
 )

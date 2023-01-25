@@ -1,0 +1,49 @@
+builds:
+  - id: local-linux-amd64
+    main: ./cmd
+    binary: blade
+    no_unique_dist_dir: true
+    ldflags:
+      - -s -w -X main.major={{.Major}} -X main.minor={{.Minor}} -X main.gitVersion={{.Summary}} -X main.gitCommit={{.FullCommit}} -X main.buildDate={{.Date}}
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+    goarch:
+      - amd64
+  - id: local-linux-arm64
+    main: ./cmd
+    binary: blade
+    no_unique_dist_dir: true
+    ldflags:
+      - -s -w -X main.major={{.Major}} -X main.minor={{.Minor}} -X main.gitVersion={{.Summary}} -X main.gitCommit={{.FullCommit}} -X main.buildDate={{.Date}}
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+    goarch:
+      - arm64
+  - id: local-darwin-amd64
+    main: ./cmd
+    binary: blade
+    no_unique_dist_dir: true
+    ldflags:
+      - -s -w -X main.major={{.Major}} -X main.minor={{.Minor}} -X main.gitVersion={{.Summary}} -X main.gitCommit={{.FullCommit}} -X main.buildDate={{.Date}}
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - darwin
+    goarch:
+      - amd64
+  - id: local-darwin-arm64
+    main: ./cmd
+    binary: blade
+    no_unique_dist_dir: true
+    ldflags:
+      - -s -w -X main.major={{.Major}} -X main.minor={{.Minor}} -X main.gitVersion={{.Summary}} -X main.gitCommit={{.FullCommit}} -X main.buildDate={{.Date}}
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - darwin
+    goarch:
+      - arm64

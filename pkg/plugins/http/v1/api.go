@@ -3,13 +3,15 @@ package v1
 import (
 	"errors"
 	"fmt"
-	"github.com/spf13/pflag"
-	"github.com/x893675/blade/pkg/plugins/http/v1/scaffolds"
 	"os"
+
+	"github.com/spf13/pflag"
 	"sigs.k8s.io/kubebuilder/v3/pkg/config"
 	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
 	"sigs.k8s.io/kubebuilder/v3/pkg/model/resource"
 	"sigs.k8s.io/kubebuilder/v3/pkg/plugin"
+
+	"github.com/x893675/blade/pkg/plugins/http/v1/scaffolds"
 )
 
 // DefaultMainPath is default file path of main.go

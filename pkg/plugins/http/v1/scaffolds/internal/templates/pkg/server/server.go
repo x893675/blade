@@ -4,8 +4,9 @@ import (
 	_ "embed"
 	"fmt"
 	"path/filepath"
-	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
 	"strings"
+
+	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
 )
 
 //go:embed server.tmpl

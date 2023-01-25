@@ -2,6 +2,7 @@ package templates
 
 import (
 	_ "embed"
+
 	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
 )
 

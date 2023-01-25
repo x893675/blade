@@ -3,6 +3,7 @@ package validate
 import (
 	_ "embed"
 	"path/filepath"
+
 	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
 )
 

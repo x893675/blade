@@ -2,14 +2,16 @@ package scaffolds
 
 import (
 	"fmt"
+
 	"github.com/spf13/afero"
-	"github.com/x893675/blade/pkg/plugins/http/v1/scaffolds/internal/templates/hack"
-	"github.com/x893675/blade/pkg/plugins/http/v1/scaffolds/internal/templates/pkg/server"
-	"github.com/x893675/blade/pkg/plugins/http/v1/scaffolds/internal/templates/pkg/server/handler"
 	"sigs.k8s.io/kubebuilder/v3/pkg/config"
 	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
 	"sigs.k8s.io/kubebuilder/v3/pkg/model/resource"
 	"sigs.k8s.io/kubebuilder/v3/pkg/plugins"
+
+	"github.com/x893675/blade/pkg/plugins/http/v1/scaffolds/internal/templates/hack"
+	"github.com/x893675/blade/pkg/plugins/http/v1/scaffolds/internal/templates/pkg/server"
+	"github.com/x893675/blade/pkg/plugins/http/v1/scaffolds/internal/templates/pkg/server/handler"
 )
 
 var _ plugins.Scaffolder = &apiScaffolder{}

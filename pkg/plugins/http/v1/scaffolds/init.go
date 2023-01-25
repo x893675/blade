@@ -18,6 +18,7 @@ package scaffolds
 
 import (
 	"fmt"
+
 	"github.com/x893675/blade/pkg/plugins/http/v1/scaffolds/internal/templates"
 	"github.com/x893675/blade/pkg/plugins/http/v1/scaffolds/internal/templates/hack"
 	configTemplate "github.com/x893675/blade/pkg/plugins/http/v1/scaffolds/internal/templates/pkg/config"

@@ -1,10 +1,12 @@
 package main
 
 import (
+	"log"
+
+	"sigs.k8s.io/kubebuilder/v3/pkg/cli"
+
 	cfgv1 "github.com/x893675/blade/pkg/config/v1"
 	httpv1 "github.com/x893675/blade/pkg/plugins/http/v1"
-	"log"
-	"sigs.k8s.io/kubebuilder/v3/pkg/cli"
 )
 
 func main() {

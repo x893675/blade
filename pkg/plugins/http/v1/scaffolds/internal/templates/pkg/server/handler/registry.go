@@ -4,11 +4,13 @@ import (
 	"bytes"
 	_ "embed"
 	"fmt"
-	"github.com/x893675/blade/pkg/plugins/http/v1/scaffolds/internal/templates/pkg/utils"
 	"path/filepath"
-	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
 	"strings"
 	"text/template"
+
+	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
+
+	"github.com/x893675/blade/pkg/plugins/http/v1/scaffolds/internal/templates/pkg/utils"
 )
 
 //go:embed registry.tmpl
