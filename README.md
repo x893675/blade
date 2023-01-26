@@ -6,7 +6,11 @@
 
 ## Installation
 
-`go inistall github.com/x893675/blade/cmd@latest`
+```shell
+curl -sfL https://oss.hanamichi.wiki/install.sh | bash
+
+mv blade /usr/local/bin/
+```
 
 ## Getting Started
 
@@ -25,6 +29,10 @@
    blade create api --group bar --version v1 --kind User
    ```
 3. `make help` 查看 Makefile 帮助信息
+
+## Demo Video
+
+[![Demo Video](https://asciinema.org/a/554608.svg)](https://asciinema.org/a/554608)
 
 ## Inspire By
 
