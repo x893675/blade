@@ -73,10 +73,10 @@ fmt: goimports## Run go fmt, goimports against code.
 ##@ Build
 
 .PHONY: build
-build: fmt golint ## Build binary with local GOOS and GOARCH.
+build: fmt golint goreleaser ## Build binary with local GOOS and GOARCH.
 	$(GORELEASER) build -f .build.yaml --snapshot --rm-dist --id local-$(GOHOSTOS)-$(GOHOSTARCH)
 
 .PHONY: build-release
-build-release: fmt golint ## Build binary with release mode.
+build-release: fmt golint goreleaser ## Build binary with release mode.
 	$(GORELEASER) build --snapshot --rm-dist --id release
 
