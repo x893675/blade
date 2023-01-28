@@ -43,7 +43,7 @@ jobs:
         run:
           make build-release
 
-      - name: Compress
+      - name: Compress and Upload to OSS
         run: |
           pushd dist
           mkdir archives
@@ -51,28 +51,9 @@ jobs:
           mv release_darwin_arm64/blade archives/blade_darwin_arm64
           mv release_linux_amd64_v1/blade archives/blade_linux_amd64
           mv release_linux_arm64/blade archives/blade_linux_arm64
+          curl -sfL -O https://devtools.qiniu.com/qshell-v2.9.2-linux-amd64.tar.gz
+          tar -xvf qshell-v2.9.2-linux-amd64.tar.gz
+          chmod +x qshell
+          ./qshell account ${{ secrets.QINIU_ACCESS_KEY }} ${{ secrets.QINIU_SECRET_KEY }} blade-uploader
+          ./qshell qupload2 --overwrite --bucket ${{ secrets.QINIU_BUCKET }} --src-dir archives --key-prefix blade/${{ steps.extract_branch.outputs.branch }}/
           popd
-
-      - name: Upload to OSS
-        uses: hujiulong/action-qiniu-upload@master
-        with:
-          # Your qiniu access key, required.
-          access_key: ${{ secrets.QINIU_ACCESS_KEY }}
-
-          # Your qiniu secret key, required.
-          secret_key: ${{ secrets.QINIU_SECRET_KEY }}
-
-          # Bucket name, required.
-          bucket: ${{ secrets.QINIU_BUCKET }}
-
-          # The local directory (or file) you want to upload to bucket.
-          # Default: './'
-          source_dir: './dist/archives'
-
-          # The directory inside of the bucket you want to upload to, namely key prefix prepended to dest file key.
-          # Default: '/'
-          dest_dir: /blade/${{ steps.extract_branch.outputs.branch }}
-
-          # Whether to ignore source maps.
-          # Default: true
-          ignore_source_map: true
