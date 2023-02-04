@@ -22,7 +22,7 @@ type Logger struct {
 // SetTemplateDefaults implements file.Template
 func (f *Logger) SetTemplateDefaults() error {
 	if f.Path == "" {
-		f.Path = filepath.Join("pkg", "server", "filters", "server.go")
+		f.Path = filepath.Join("pkg", "server", "filters", "log.go")
 	}
 
 	f.TemplateBody = loggerTemplate
