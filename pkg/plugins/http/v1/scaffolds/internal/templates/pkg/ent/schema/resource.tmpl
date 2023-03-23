@@ -1,0 +1,53 @@
+{{ .Boilerplate }}
+
+package schema
+
+import (
+	"entgo.io/ent"
+	"entgo.io/ent/dialect/entsql"
+	"entgo.io/ent/schema"
+	"entgo.io/ent/schema/field"
+	"github.com/google/uuid"
+)
+
+// {{ toPascal .Resource.Kind }} holds the schema definition for the {{ toPascal .Resource.Kind }} entity.
+type {{ toPascal .Resource.Kind }} struct {
+	ent.Schema
+}
+
+// Annotations of the {{ toPascal .Resource.Kind }}.
+func ({{ toPascal .Resource.Kind }}) Annotations() []schema.Annotation {
+	return []schema.Annotation{
+		entsql.Annotation{Table: "{{ lower .Resource.Kind }}"},
+	}
+}
+
+// Fields of the {{ toPascal .Resource.Kind }}.
+func ({{ toPascal .Resource.Kind }}) Fields() []ent.Field {
+	return []ent.Field{
+		field.String("id").
+			MaxLen(64).
+			NotEmpty().
+			Unique().
+			Immutable().
+			DefaultFunc(func() string {
+				return uuid.NewString()
+			}),
+		field.String("name").
+			MaxLen(32),
+		// TODO(user): add fields here.
+	}
+}
+
+func ({{ toPascal .Resource.Kind }}) Mixin() []ent.Mixin {
+	return []ent.Mixin{
+		AuditMixin{},
+	}
+}
+
+// TODO(user): add indexes here.
+//func ({{ toPascal .Resource.Kind }}) Indexes() []ent.Index {
+//	return []ent.Index{
+//		index.Fields("name").Unique(),
+//	}
+//}

@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"os"
 
+	"sigs.k8s.io/kubebuilder/v3/pkg/plugin/util"
+
 	"github.com/spf13/pflag"
 	"sigs.k8s.io/kubebuilder/v3/pkg/config"
 	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
@@ -22,6 +24,9 @@ var _ plugin.CreateAPISubcommand = &createAPISubcommand{}
 type createAPISubcommand struct {
 	config   config.Config
 	resource *resource.Resource
+
+	// orm indicates whether to scaffold the resource orm code
+	orm bool
 
 	// force indicates that the resource should be created even if it already exists
 	force bool
@@ -55,6 +60,8 @@ func (c *createAPISubcommand) BindFlags(fs *pflag.FlagSet) {
 
 	fs.BoolVar(&c.force, "force", false,
 		"attempt to create resource even if it already exists")
+
+	fs.BoolVar(&c.orm, "orm", false, "if true, scaffold the resource orm code")
 }
 
 func (c *createAPISubcommand) InjectConfig(cfg config.Config) error {
@@ -75,7 +82,7 @@ func (c *createAPISubcommand) InjectResource(r *resource.Resource) error {
 }
 
 func (c *createAPISubcommand) Scaffold(fs machinery.Filesystem) error {
-	scaffolder := scaffolds.NewAPIScaffolder(c.config, *c.resource, c.force)
+	scaffolder := scaffolds.NewAPIScaffolder(c.config, *c.resource, c.force, c.orm)
 	scaffolder.InjectFS(fs)
 	return scaffolder.Scaffold()
 }
@@ -90,6 +97,15 @@ func (c *createAPISubcommand) PreScaffold(machinery.Filesystem) error {
 }
 
 func (c *createAPISubcommand) PostScaffold() error {
-	fmt.Print("Next: implement your new API.")
+	if c.runMake {
+		err := util.RunCmd("Update dependencies", "go", "mod", "tidy")
+		if err != nil {
+			return err
+		}
+		err = util.RunCmd("Update generate", "make", "generate")
+		if err != nil {
+			return err
+		}
+	}
 	return nil
 }

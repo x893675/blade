@@ -3,6 +3,12 @@ package scaffolds
 import (
 	"fmt"
 
+	"github.com/x893675/blade/pkg/plugins/http/v1/scaffolds/internal/templates/pkg/ent"
+
+	"github.com/x893675/blade/pkg/plugins/http/v1/scaffolds/internal/templates/pkg/ent/schema"
+	"github.com/x893675/blade/pkg/plugins/http/v1/scaffolds/internal/templates/pkg/models"
+	"github.com/x893675/blade/pkg/plugins/http/v1/scaffolds/internal/templates/pkg/mtime"
+
 	"github.com/spf13/afero"
 	"sigs.k8s.io/kubebuilder/v3/pkg/config"
 	"sigs.k8s.io/kubebuilder/v3/pkg/machinery"
@@ -27,14 +33,18 @@ type apiScaffolder struct {
 
 	// force indicates whether to scaffold controller files even if it exists or not
 	force bool
+
+	// orm indicates whether to scaffold the resource orm code
+	orm bool
 }
 
 // NewAPIScaffolder returns a new Scaffolder for API/controller creation operations
-func NewAPIScaffolder(config config.Config, res resource.Resource, force bool) plugins.Scaffolder {
+func NewAPIScaffolder(config config.Config, res resource.Resource, force bool, orm bool) plugins.Scaffolder {
 	return &apiScaffolder{
 		config:   config,
 		resource: res,
 		force:    force,
+		orm:      orm,
 	}
 }
 
@@ -74,21 +84,30 @@ func (s *apiScaffolder) Scaffold() error {
 		return fmt.Errorf("error updating resource: %w", err)
 	}
 
+	var builders []machinery.Builder
 	if doUpdate {
+		builders = append(builders, &handler.RegistryUpdater{})
+		builders = append(builders, &handler.HandlerUpdater{})
+	} else {
+		builders = append(builders, &handler.Base{})
+		builders = append(builders, &handler.Registry{})
+		builders = append(builders, &handler.Handler{})
+	}
+
+	if err := scaffold.Execute(builders...); err != nil {
+		return fmt.Errorf("error scaffolding APIs: %v", err)
+	}
+
+	if s.orm {
 		if err := scaffold.Execute(
-			&handler.RegistryUpdater{},
-			&handler.HandlerUpdater{},
+			&schema.Base{},
+			&models.Models{},
+			&mtime.MTime{},
+			&schema.Resource{},
+			&ent.Generate{},
 		); err != nil {
 			return fmt.Errorf("error scaffolding APIs: %v", err)
 		}
-		return nil
-	}
-	if err := scaffold.Execute(
-		&handler.Base{},
-		&handler.Registry{},
-		&handler.Handler{},
-	); err != nil {
-		return fmt.Errorf("error scaffolding APIs: %v", err)
 	}
 
 	if err := scaffold.Execute(&server.ServerUpdater{}); err != nil {
