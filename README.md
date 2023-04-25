@@ -15,11 +15,13 @@ mv blade /usr/local/bin/
 ## Getting Started
 
 1. 初始化 HTTP 项目
+
    ```shell
    # 初始化项目，设置作者，仓库名，项目名
    blade init --owner "x893675" --repo github.com/x893675/blade-test --project-name blade-test
    ```
 2. 添加 API
+
    ```shell
    # 添加 API, API 路由为 /foo/v1/user
    blade create api --group foo --version v1 --kind User
@@ -36,4 +38,4 @@ mv blade /usr/local/bin/
 
 ## Inspire By
 
-* [kubebuilder](https://github.com/kubernetes-sigs/kubebuilder)
+- [kubebuilder](https://github.com/kubernetes-sigs/kubebuilder)
